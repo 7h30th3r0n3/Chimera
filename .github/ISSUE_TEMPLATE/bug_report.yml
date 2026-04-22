@@ -1,0 +1,32 @@
+name: Bug Report
+description: Something isn't working as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting!
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the issue
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened instead?
+    validations:
+      required: true
+  - type: input
+    id: claude-version
+    attributes:
+      label: Claude Code version
+      placeholder: "e.g., 1.0.20"
+  - type: input
+    id: codex-version
+    attributes:
+      label: Codex CLI version
+      placeholder: "e.g., 0.122.0"
