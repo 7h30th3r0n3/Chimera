@@ -14,7 +14,7 @@
             /_/   \_\
 ```
 
-> **Hybrid AI orchestration** — Claude Code as the brain, Codex CLI as the muscle.
+> **Hybrid AI orchestration** - Claude Code as the brain, Codex CLI as the muscle.
 
 Chimera turns Claude Code into a multi-model orchestrator by replacing its native sub-agents with OpenAI Codex CLI calls. Instead of spawning Claude agents for heavy tasks, Claude delegates to `codex exec`, combining the strengths of both systems.
 
@@ -27,10 +27,10 @@ Chimera turns Claude Code into a multi-model orchestrator by replacing its nativ
 | **Mode** | Interactive + agents | `codex exec` non-interactive |
 
 By combining them, you get:
-- **Multi-model diversity** — two different AI architectures cross-checking each other
-- **Cost optimization** — delegate token-heavy tasks to the most efficient model
-- **Best of both worlds** — Claude's reasoning + Codex's sandboxed execution
-- **Second opinion** — reduce blind spots by using independent model families
+- **Multi-model diversity** - two different AI architectures cross-checking each other
+- **Cost optimization** - delegate token-heavy tasks to the most efficient model
+- **Best of both worlds** - Claude's reasoning + Codex's sandboxed execution
+- **Second opinion** - reduce blind spots by using independent model families
 
 ## Prerequisites
 
@@ -63,17 +63,17 @@ The installer checks prerequisites and lets you choose global or project-level i
 
 ### Manual install
 
-**Option 1 — Global** (all Claude Code sessions):
+**Option 1 - Global** (all Claude Code sessions):
 ```bash
 cp .claude/rules/chimera.md ~/.claude/rules/chimera.md
 ```
 
-**Option 2 — Project** (current project only):
+**Option 2 - Project** (current project only):
 ```bash
 cp .claude/rules/chimera.md your-project/.claude/rules/chimera.md
 ```
 
-**Option 3 — CLAUDE.md**: Append the content of `.claude/rules/chimera.md` to your project's `CLAUDE.md` file.
+**Option 3 - CLAUDE.md**: Append the content of `.claude/rules/chimera.md` to your project's `CLAUDE.md` file.
 
 ### Uninstall
 
@@ -82,11 +82,11 @@ cd Chimera
 ./scripts/uninstall.sh
 ```
 
-Supports `--global`, `--project`, or `--all` flags. Interactive by default — detects where Chimera is installed and lets you choose what to remove.
+Supports `--global`, `--project`, or `--all` flags. Interactive by default - detects where Chimera is installed and lets you choose what to remove.
 
 ## Auto-Detection
 
-Chimera doesn't wait for you to ask — it estimates token cost before starting a task and automatically delegates to Codex when the workload is heavy.
+Chimera doesn't wait for you to ask - it estimates token cost before starting a task and automatically delegates to Codex when the workload is heavy.
 
 ### Signals that trigger auto-delegation
 
@@ -193,13 +193,13 @@ Like Claude Code lets you pick between Opus, Sonnet, and Haiku, Chimera routes t
 | Quick lookups, boilerplate, formatting | `o4-mini` | `--model o4-mini` | Haiku |
 
 ```bash
-# Deep analysis — use o3
+# Deep analysis - use o3
 codex exec "Audit this auth flow for subtle logic bugs" --full-auto --model o3
 
-# Standard work — default model
+# Standard work - default model
 codex exec "Review this PR for code quality" --full-auto
 
-# Quick/cheap — use o4-mini
+# Quick/cheap - use o4-mini
 codex exec "Generate test fixtures for User model" --full-auto --model o4-mini
 ```
 
@@ -209,33 +209,33 @@ Match model to stakes: critical security review gets `o3`, boilerplate generatio
 
 The core Chimera rule is in [`.claude/rules/chimera.md`](.claude/rules/chimera.md). You can customize:
 
-- **When to delegate** — adjust the criteria for what counts as a "heavy task"
-- **Codex flags** — add `--model`, `--sandbox`, or other Codex CLI options
-- **Scope** — limit delegation to specific task types (review, analysis, codegen)
+- **When to delegate** - adjust the criteria for what counts as a "heavy task"
+- **Codex flags** - add `--model`, `--sandbox`, or other Codex CLI options
+- **Scope** - limit delegation to specific task types (review, analysis, codegen)
 
 ## Limitations
 
 - Codex CLI requires its own API key and authentication
-- `codex exec` runs in a sandbox — it can read your workspace but writes are limited
+- `codex exec` runs in a sandbox - it can read your workspace but writes are limited
 - Network calls from Codex are sandboxed
 - Token usage is billed separately by both Anthropic and OpenAI
-- The two models don't share conversation context — each call is independent
+- The two models don't share conversation context - each call is independent
 
 ## Extending Chimera
 
 Chimera is designed to be extended. Some ideas:
 
-- **Add more AI CLIs** — Gemini CLI, GitHub Copilot CLI, or local models via Ollama
-- **Custom routing logic** — route by file type, language, or domain
-- **Chain delegation** — Claude delegates to Codex, which delegates to a local model
-- **Evaluation pipelines** — run both models on the same task and diff the results
+- **Add more AI CLIs** - Gemini CLI, GitHub Copilot CLI, or local models via Ollama
+- **Custom routing logic** - route by file type, language, or domain
+- **Chain delegation** - Claude delegates to Codex, which delegates to a local model
+- **Evaluation pipelines** - run both models on the same task and diff the results
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute.
 
 ## License
 
-MIT — see [LICENSE](LICENSE)
+MIT - see [LICENSE](LICENSE)
 
 ---
 
-*Built with the Chimera technique itself — Claude Code orchestrated, Codex contributed.*
+*Built with the Chimera technique itself - Claude Code orchestrated, Codex contributed.*
