@@ -5,12 +5,12 @@
 [![Codex CLI](https://img.shields.io/badge/Codex%20CLI-compatible-green)](https://github.com/openai/codex)
 
 ```
-   /\_/\      .-=-.      /\_/\
+   /\_/\      .-=-.       /\_/\
   ( o.o )----/  AI  \----( 0.0 )
-   > ^ <    | Chimera |    > # <
-             \ Claude/
+   > ^ <    |Chimera |    > # <
+             \Claude/
               `-=-'
-             / Codex \
+             /Codex\
             /_/   \_\
 ```
 
