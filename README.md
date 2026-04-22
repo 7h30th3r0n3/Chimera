@@ -111,7 +111,7 @@ Estimate scope (file count, line count)
     |-- < 500 lines ---------> handle directly
     |-- 500-2000 lines ------> handle or delegate (based on complexity)
     |-- 2000-5000 lines -----> delegate to Codex (default model)
-    |-- 5000+ lines ----------> delegate to Codex with --model o3
+    |-- 5000+ lines ----------> delegate to Codex (o3 if API plan, default otherwise)
 ```
 
 This means heavy tasks get offloaded automatically without you having to think about it.
@@ -186,24 +186,26 @@ See the [examples/](examples/) directory for more use cases.
 
 Like Claude Code lets you pick between Opus, Sonnet, and Haiku, Chimera routes tasks to the right Codex model:
 
-| Task Type | Codex Model | Flag | Claude Equivalent |
-|---|---|---|---|
-| Deep reasoning, security audits, architecture | `o3` | `--model o3` | Opus |
-| Code review, generation, general analysis | `gpt-5.4` | *(default)* | Sonnet |
-| Quick lookups, boilerplate, formatting | `o4-mini` | `--model o4-mini` | Haiku |
+| Task Type | Codex Model | Flag | Claude Equivalent | Requires API plan |
+|---|---|---|---|---|
+| Deep reasoning, security audits, architecture | `o3` | `--model o3` | Opus | Yes |
+| Code review, generation, general analysis | `gpt-5.4` | *(default)* | Sonnet | No |
+| Quick lookups, boilerplate, formatting | `o4-mini` | `--model o4-mini` | Haiku | No |
+
+> **Note:** `o3` requires an OpenAI API subscription. It will fail on ChatGPT-only accounts. If unsure, use the default (no `--model` flag).
 
 ```bash
-# Deep analysis - use o3
+# Deep analysis - use o3 (API plan required)
 codex exec "Audit this auth flow for subtle logic bugs" --full-auto --model o3
 
-# Standard work - default model
+# Standard work - default model (works on all plans)
 codex exec "Review this PR for code quality" --full-auto
 
 # Quick/cheap - use o4-mini
 codex exec "Generate test fixtures for User model" --full-auto --model o4-mini
 ```
 
-Match model to stakes: critical security review gets `o3`, boilerplate generation gets `o4-mini`.
+Match model to stakes: critical security review gets `o3` (if available), boilerplate gets `o4-mini`.
 
 ## Configuration
 
@@ -213,6 +215,18 @@ The core Chimera rule is in [`.claude/rules/chimera.md`](.claude/rules/chimera.m
 - **Codex flags** - add `--model`, `--sandbox`, or other Codex CLI options
 - **Scope** - limit delegation to specific task types (review, analysis, codegen)
 
+## Troubleshooting
+
+These are real issues encountered during Chimera development:
+
+| Error | Cause | Fix |
+|---|---|---|
+| `Not inside a trusted directory` | Codex requires a git repo by default | Add `--skip-git-repo-check` |
+| `model is not supported with ChatGPT account` | `o3` needs an OpenAI API plan | Remove `--model` flag (use default) |
+| `Reading additional input from stdin...` | Codex waits for stdin | Normal - it still runs. Pass prompt as positional arg |
+| File not found in sandbox | File is outside sandbox paths | Copy file to `/tmp` first, then reference `/tmp/file` |
+| Hangs on WSL paths (`/mnt/c/...`) | Sandbox can't access Windows paths | `cp /mnt/c/.../file /tmp/file` before delegating |
+
 ## Limitations
 
 - Codex CLI requires its own API key and authentication
@@ -220,6 +234,8 @@ The core Chimera rule is in [`.claude/rules/chimera.md`](.claude/rules/chimera.m
 - Network calls from Codex are sandboxed
 - Token usage is billed separately by both Anthropic and OpenAI
 - The two models don't share conversation context - each call is independent
+- Some models (`o3`) require an OpenAI API plan, not just ChatGPT
+- Codex must run inside a git repo (or use `--skip-git-repo-check`)
 
 ## Extending Chimera
 
