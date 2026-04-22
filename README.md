@@ -75,6 +75,38 @@ cp .claude/rules/chimera.md your-project/.claude/rules/chimera.md
 
 **Option 3 — CLAUDE.md**: Append the content of `.claude/rules/chimera.md` to your project's `CLAUDE.md` file.
 
+## Auto-Detection
+
+Chimera doesn't wait for you to ask — it estimates token cost before starting a task and automatically delegates to Codex when the workload is heavy.
+
+### Signals that trigger auto-delegation
+
+| Signal | Threshold | Action |
+|---|---|---|
+| File count | 10+ files targeted | Auto-delegate |
+| Total lines | 2000+ lines to process | Auto-delegate |
+| File size | 500+ lines per file | Auto-delegate |
+| Recursive scan | Full directory tree | Auto-delegate |
+| Large PR diff | 500+ lines changed | Auto-delegate |
+
+### Estimation flow
+
+Before starting work, Claude runs a quick size check:
+
+```
+Task received
+    |
+    v
+Estimate scope (file count, line count)
+    |
+    |-- < 500 lines ---------> handle directly
+    |-- 500-2000 lines ------> handle or delegate (based on complexity)
+    |-- 2000-5000 lines -----> delegate to Codex (default model)
+    |-- 5000+ lines ----------> delegate to Codex with --model o3
+```
+
+This means heavy tasks get offloaded automatically without you having to think about it.
+
 ## How it works
 
 When Claude Code encounters a task that would normally be delegated to a sub-agent, it instead runs:

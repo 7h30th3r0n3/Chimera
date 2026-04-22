@@ -12,13 +12,48 @@ Run tasks via `codex exec` in non-interactive mode:
 codex exec "<clear task description with full context>" --full-auto
 ```
 
-### When to delegate to Codex
+### Auto-detection: when to delegate to Codex
 
-- **Heavy analysis** — large codebases, dependency audits, log analysis
+Before starting a task, estimate its token cost. If ANY of the following signals are present, delegate to Codex automatically — do not attempt it yourself.
+
+#### File-count signals (auto-delegate)
+
+- Task targets **10+ files** → delegate
+- Task requires **recursive scanning** of a directory tree → delegate
+- Task involves reading files that are **500+ lines each** → delegate
+- Task involves **3+ large files** (200+ lines) simultaneously → delegate
+
+#### Task-type signals (auto-delegate)
+
+- **Full codebase scan** — grep/analysis across entire project → delegate
+- **Dependency audit** — scanning package.json, go.mod, requirements.txt + CVE lookup → delegate
+- **Log analysis** — parsing log files (typically large) → delegate
+- **Documentation generation** — reading all source files to produce docs → delegate
+- **Migration assessment** — analyzing all files for a technology migration → delegate
+- **Code generation spanning 3+ files** — multi-file boilerplate or scaffolding → delegate
+- **Diff analysis on large PRs** — 500+ lines changed → delegate
+
+#### Estimation heuristic
+
+Before starting, run a quick check:
+```bash
+# Count files that would be involved
+find <target_dir> -name "*.ext" | wc -l
+
+# Check total line count
+find <target_dir> -name "*.ext" -exec wc -l {} + | tail -1
+```
+
+- **< 500 total lines across all files** → handle directly
+- **500–2000 lines** → handle directly, but consider delegating if complex analysis
+- **2000+ lines** → delegate to Codex
+- **5000+ lines** → delegate to Codex with `--model o3` for thoroughness
+
+#### Manual delegation (always delegate)
+
 - **Code review** — get an independent second opinion from a different model
-- **Code generation** — boilerplate, repetitive patterns, large file generation
 - **Cross-validation** — verify your own analysis with an independent model
-- **Token-intensive tasks** — anything that would consume significant context
+- **Second opinion on critical decisions** — architecture, security, data migrations
 
 ### When NOT to delegate
 
