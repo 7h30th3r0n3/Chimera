@@ -75,6 +75,15 @@ cp .claude/rules/chimera.md your-project/.claude/rules/chimera.md
 
 **Option 3 — CLAUDE.md**: Append the content of `.claude/rules/chimera.md` to your project's `CLAUDE.md` file.
 
+### Uninstall
+
+```bash
+cd Chimera
+./scripts/uninstall.sh
+```
+
+Supports `--global`, `--project`, or `--all` flags. Interactive by default — detects where Chimera is installed and lets you choose what to remove.
+
 ## Auto-Detection
 
 Chimera doesn't wait for you to ask — it estimates token cost before starting a task and automatically delegates to Codex when the workload is heavy.
