@@ -9,11 +9,11 @@
 ```
    /\_/\      .-=-.       /\_/\
   ( o.o )----/  AI  \----( 0.0 )
-   > ^ <    |Chimera |    > # <
-  Codex     \       /     Claude  
-              `-=-'
-             /     \
-            /_/   \_\
+   > ^ <   |Chimera |    > # <
+  Codex     \       /     Claude
+  `-=-'
+ /     \
+/_/   \_\
 ```
 
 **Hybrid AI orchestration**
